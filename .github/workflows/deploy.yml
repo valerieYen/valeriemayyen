@@ -20,7 +20,7 @@ jobs:
           node-version: '20'  # Update to Node 20
 
       - name: Install dependencies
-        uses: bahmutov/npm-install@v1
+        run: npm install  # Changed to use a direct npm command
 
       - name: Build project
         run: npm run build
@@ -38,4 +38,14 @@ jobs:
     if: github.ref == 'refs/heads/main'
 
     steps:
-      - name:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: production-files
+          path: ./dist
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
