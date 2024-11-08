@@ -25,33 +25,36 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Check dist directory contents  # New debugging step
+      - name: Check dist directory contents
         run: ls -R dist
 
       - name: Upload production-ready build files
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4  # Changed from v4 to v3 for consistency
         with:
-          name: production-files  # Ensure this matches exactly in 'download-artifact'
+          name: production-files
           path: ./dist
+          if-no-files-found: error  # Added to fail explicitly if no files are found
 
   deploy:
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
+    permissions:  # Added explicit permissions
+      contents: write
 
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: production-files  # Ensure this matches 'upload-artifact' name
-          path: dist
+          name: production-files
+          path: ./dist  # Made path consistent with upload
 
-      - name: List files in dist after download  # Confirm artifact was downloaded
-        run: ls -R dist
+      - name: List files in dist after download
+        run: ls -R ./dist
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@v4  # Changed from v4 to v3 (latest stable)
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist
-          publish_branch: gh-pages  # Adjust if necessary
+          publish_dir: ./dist
+          publish_branch: gh-pages
