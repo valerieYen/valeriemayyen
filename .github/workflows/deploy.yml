@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - master  # Ensure this matches your main branch
+      - master
 
 jobs:
   build:
@@ -25,36 +25,57 @@ jobs:
       - name: Build project
         run: npm run build
 
-      - name: Check dist directory contents
-        run: ls -R dist
+      - name: Debug workspace
+        run: |
+          echo "Current directory contents:"
+          ls -la
+          echo "Dist directory contents (if exists):"
+          ls -la dist || echo "dist directory not found"
+          echo "Current working directory:"
+          pwd
 
       - name: Upload production-ready build files
-        uses: actions/upload-artifact@v4  # Changed from v4 to v3 for consistency
+        uses: actions/upload-artifact@v3
         with:
           name: production-files
-          path: ./dist
-          if-no-files-found: error  # Added to fail explicitly if no files are found
+          path: dist
+          if-no-files-found: error
+
+      - name: Verify artifact upload
+        run: echo "Artifact upload step completed"
 
   deploy:
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
-    permissions:  # Added explicit permissions
+    permissions:
       contents: write
-
+      
     steps:
+      - name: Debug before download
+        run: |
+          echo "Current directory before download:"
+          ls -la
+          pwd
+
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
           name: production-files
-          path: ./dist  # Made path consistent with upload
+          path: dist
 
-      - name: List files in dist after download
-        run: ls -R ./dist
+      - name: Debug after download
+        run: |
+          echo "Current directory after download:"
+          ls -la
+          echo "Dist directory contents:"
+          ls -la dist || echo "dist directory not found"
+          pwd
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4  # Changed from v4 to v3 (latest stable)
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: dist
           publish_branch: gh-pages
+          force_orphan: true
