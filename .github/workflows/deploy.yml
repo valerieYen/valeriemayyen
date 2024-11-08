@@ -3,7 +3,7 @@ name: Deploy
 on:
   push:
     branches:
-      - master
+      - master  # Ensure this matches your main branch
 
 jobs:
   build:
@@ -17,35 +17,41 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: '20'  # Optional since Node 20 is the default
+          node-version: '20'
 
       - name: Install dependencies
-        run: npm install  # Directly use npm install command
+        run: npm install
 
       - name: Build project
         run: npm run build
 
+      - name: Check dist directory contents  # New debugging step
+        run: ls -R dist
+
       - name: Upload production-ready build files
-        uses: actions/upload-artifact@v4  # Updated to v4
+        uses: actions/upload-artifact@v4
         with:
-          name: production-files
+          name: production-files  # Ensure this matches exactly in 'download-artifact'
           path: ./dist
 
   deploy:
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master'  # Ensure it matches the branch
 
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: production-files
-          path: ./dist
+          name: production-files  # Ensure this matches 'upload-artifact' name
+          path: dist
+
+      - name: List files in dist after download  # Confirm artifact was downloaded
+        run: ls -R dist
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: dist
+          publish_branch: gh-pages  # Adjust if necessary
