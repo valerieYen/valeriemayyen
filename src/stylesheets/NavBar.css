@@ -1,0 +1,29 @@
+.NavBar {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    background-color: #0d0d0eff;
+  }
+  
+  .NavOp {
+    margin: 0 1rem;
+  }
+  
+  .LeftSideNav {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .RightSideNav {
+    display: flex;
+    flex-direction: row;
+  }
+  
+  .Spacer {
+    flex-grow: 1;
+  }
+
+  .Logo {
+    max-height: 3rem;
+    margin-top: .75rem;
+  }
