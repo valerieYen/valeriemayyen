@@ -9,15 +9,15 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/valeriemayyen" element={<Layout />}>
+        <Route path="/personal-site" element={<Layout />}>
           <Route index element={<Home />} /> 
-          <Route path="/valeriemayyen/work" element={<Work />}/> 
-          <Route path="/valeriemayyen/about" element={<About />}/> 
+          <Route path="/personal-site/work" element={<Work />}/> 
+          <Route path="/personal-site/about" element={<About />}/> 
           <Route path="*"
             element={
               <div className="">
                 <p className="">Theres nothing here!</p>
-                <Link to="/valeriemayyen/" className="">
+                <Link to="/personal-site/" className="">
                   Back to Home
                 </Link>
               </div>
