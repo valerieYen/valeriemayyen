@@ -1,6 +1,8 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import Layout from './Layout';
 import Home from './pages/Home';
+import Work from './pages/Work';
+import About from './pages/About';
 import './stylesheets/App.css'
 
 const App = () => {
@@ -8,7 +10,9 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/valeriemayyen" element={<Layout />}>
-          <Route index element={<Home />} />  
+          <Route index element={<Home />} /> 
+          <Route path="/valeriemayyen/work" element={<Work />}/> 
+          <Route path="/valeriemayyen/about" element={<About />}/> 
           <Route path="*"
             element={
               <div className="">

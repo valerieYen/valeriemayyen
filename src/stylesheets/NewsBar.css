@@ -7,6 +7,7 @@
     right: 0;
     font-family: "Oxanium", serif;
     background-color: #0d0d0eff;
+    z-index: 10;
 }
 
 .NewsBar .BarTitle {

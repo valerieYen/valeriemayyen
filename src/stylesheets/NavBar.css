@@ -3,6 +3,7 @@
     flex-direction: row;
     width: 100%;
     background-color: #0d0d0eff;
+    z-index: 100;
   }
   
   .NavOp {
